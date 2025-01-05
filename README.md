@@ -197,3 +197,52 @@ This script is an advanced automation tool for executing exhaustive DNS queries 
  * Log File: dig_results_20250105_123456.log
  * Error Log: errors.log
  * HTML Report: dig_report_20250105_123456.html
+
+# Explanation of the Code (tester_dig.sh)
+This script automates DNS testing and enumeration using the `dig` command. It systematically runs through combinations of domains, DNS servers, query types, and options to test DNS functionality and behavior comprehensively.
+
+## Comprehensive Usage in Linux
+### Prerequisites
+
+1. **Install DIG:**
+
+ * On Debian/Ubuntu
+
+   ```
+   sudo apt update && sudo apt install dnsutils
+   ```
+ * On RHEL/CentOS:
+
+   ```
+   sudo yum install bind-utils
+   ```
+2. **Clone the Repository:**
+   * Clone the repository to your system:
+
+     ```
+     git clone https://github.com/YourUsername/dig-automation-tool.git
+     cd dig-automation-tool
+     ```
+3. **Make the Script Executable:**
+
+     ```
+     chmod +x dig_tool.sh
+     ```
+### Running the Script
+1. **Execute the Script:**
+
+ * Run the script directly:
+
+   ```
+   ./dig_tool.sh
+   ```
+2. **Customizing Inputs:**
+
+ * Edit the arrays in the script to include specific domains, servers, query types, or options:
+
+   ```
+   domains=("yourdomain.com" "anotherdomain.org")
+   servers=("8.8.8.8" "1.1.1.1")
+   query_types=("A" "NS")
+   options=("+trace" "+dnssec")
+   ```
