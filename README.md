@@ -247,7 +247,7 @@ This script automates DNS testing and enumeration using the `dig` command. It sy
    options=("+trace" "+dnssec")
    ```
 
-# DIG Tool GUI Documentation
+# DIG Tool GUI Documentation (gui_testing-version.py)
 
 ## Overview
 This application is a professional graphical user interface (GUI) for the DIG (Domain Information Groper) DNS lookup utility, built using PyQt5. It provides a user-friendly interface to execute DNS queries with various options and parameters, making it easier to perform DNS lookups without memorizing command-line arguments.
