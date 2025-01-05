@@ -246,3 +246,176 @@ This script automates DNS testing and enumeration using the `dig` command. It sy
    query_types=("A" "NS")
    options=("+trace" "+dnssec")
    ```
+
+# DIG Tool GUI Documentation
+
+## Overview
+This application is a professional graphical user interface (GUI) for the DIG (Domain Information Groper) DNS lookup utility, built using PyQt5. It provides a user-friendly interface to execute DNS queries with various options and parameters, making it easier to perform DNS lookups without memorizing command-line arguments.
+
+## Technical Architecture
+
+### Core Components
+
+1. **CommandRunner (QThread)**
+   - Handles asynchronous execution of DIG commands
+   - Emits signals for successful output and errors
+   - Prevents GUI freezing during command execution
+
+2. **DIGToolGUI (QMainWindow)**
+   - Main application window implementing the GUI
+   - Organized into five main tabs:
+     - Basic Settings
+     - Query Options
+     - Display Options
+     - Advanced Options
+     - Logs
+
+### Key Features
+
+#### 1. Basic Settings Tab
+- Domain input field
+- Query type selection (A, AAAA, MX, NS, etc.)
+- Query class selection (IN, CH, HS)
+
+#### 2. Query Options Tab
+- Transport Options:
+  - TCP usage toggle
+  - IPv4/IPv6 protocol selection
+- Query Flags:
+  - DNSSEC records request
+  - CD, RA, and AA flags
+
+#### 3. Display Options Tab
+- Output format controls:
+  - Short output mode
+  - Multiline output
+  - Statistics display
+  - Comments visibility
+  - TTL units formatting
+
+#### 4. Advanced Options Tab
+- Timing controls:
+  - Query timeout settings
+  - Retry attempts configuration
+- Custom options input
+
+#### 5. Logs Tab
+- Operation logging
+- Log saving functionality
+- Log clearing option
+
+## Command Construction Logic
+
+The application builds DIG commands using the following structure:
+```
+dig [domain] -t [query-type] -c [query-class] [transport-options] [query-flags] [display-options] [timing-options] [additional-options]
+```
+
+## Installation Requirements
+
+1. Python 3.x
+2. PyQt5
+3. DIG utility (typically included in Linux distributions)
+
+```bash
+# Install required Python packages
+pip install PyQt5
+```
+
+## Usage Guide
+
+### Basic Query Execution
+
+1. **Launch the Application**
+   ```bash
+   python3 dig_tool_gui.py
+   ```
+
+2. **Basic DNS Query**
+   - Enter domain name (e.g., google.com)
+   - Select query type (e.g., A for IPv4 address)
+   - Click "Execute Query"
+
+### Advanced Features
+
+1. **Transport Configuration**
+   - Enable TCP for larger queries
+   - Force IPv4/IPv6 protocol when needed
+
+2. **DNSSEC Verification**
+   - Enable DNSSEC checkbox for security verification
+   - Use CD flag to disable DNSSEC validation
+
+3. **Output Customization**
+   - Enable multiline for readable output
+   - Use short mode for compact results
+   - Enable statistics for query performance data
+
+4. **Timing Controls**
+   - Set custom timeout values
+   - Configure retry attempts for unreliable connections
+
+### Log Management
+
+1. **Viewing Logs**
+   - Switch to Logs tab
+   - Review command history and results
+
+2. **Saving Logs**
+   - Click "Save Logs"
+   - Choose destination file
+   - Logs saved in text format
+
+## Common Use Cases
+
+1. **Standard DNS Lookup**
+   ```
+   Domain: example.com
+   Query Type: A
+   Query Class: IN
+   ```
+
+2. **Mail Server Verification**
+   ```
+   Domain: example.com
+   Query Type: MX
+   Display Options: +short
+   ```
+
+3. **DNSSEC Validation**
+   ```
+   Domain: example.com
+   Query Type: DNSKEY
+   Query Options: +dnssec +cdflag
+   ```
+
+## Troubleshooting
+
+1. **Common Issues**
+   - Command execution failures
+   - Network connectivity problems
+   - Invalid domain format
+
+2. **Resolution Steps**
+   - Check domain name format
+   - Verify network connection
+   - Review error messages in logs
+   - Ensure DIG utility is installed
+
+## Best Practices
+
+1. **Query Optimization**
+   - Use appropriate query types
+   - Enable TCP for large responses
+   - Set reasonable timeout values
+
+2. **Security Considerations**
+   - Use DNSSEC when security is critical
+   - Review query responses carefully
+   - Monitor operation logs
+
+## Additional Notes
+
+- The application requires proper DNS resolution configuration on the host system
+- Some features may require root privileges depending on system configuration
+- Regular log maintenance is recommended for optimal performance
