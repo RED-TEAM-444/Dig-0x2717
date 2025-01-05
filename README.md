@@ -35,7 +35,7 @@ A **comprehensive DNS testing tool** built with **Bash** that automates DNS quer
  2. #### Clone the Repository:
 
      ```
-     git clone https://github.com/YourUsername/dig-command-tool.git
+     git clone https://github.com/RED-TEAM-444/Dig-0x2717.git
      cd dig-command-tool
      ```
  3. #### Make the Script Executable:
@@ -146,7 +146,7 @@ This script is an advanced automation tool for executing exhaustive DNS queries 
 2. Clone the Repository:
 
     ```
-    git clone https://github.com/YourUsername/advanced-dig-tool.git
+    git clone https://github.com/RED-TEAM-444/Dig-0x2717.git
     cd advanced-dig-tool
     ```
 4. Make the Script Executable:
@@ -220,7 +220,7 @@ This script automates DNS testing and enumeration using the `dig` command. It sy
    * Clone the repository to your system:
 
      ```
-     git clone https://github.com/YourUsername/dig-automation-tool.git
+     git clone https://github.com/RED-TEAM-444/Dig-0x2717.git
      cd dig-automation-tool
      ```
 3. **Make the Script Executable:**
