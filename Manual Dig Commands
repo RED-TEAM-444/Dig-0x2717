@@ -1,0 +1,324 @@
+## Author = SID || REAM TEAM || https://github.com/RED-TEAM-444/Dig-0x2717 
+
+dig (Domain Information Groper). It's a network administration command-line tool for querying DNS (Domain Name System) servers.
+
+HELLO EVERYONE :) , Today Is about DIG.........
+
+
+
+# Basic DNS Queries                                                                  For Demonstration I'm gonna use this vulnerable website: (1) https://www.hackthissite.org
+
+                                                                                                                                                       ```  hackthissite.org  ```
+dig example.com                     # Default query (returns A record)                                                                      
+dig example.com ANY                 # Query all available records
+dig example.com +short              # Brief output format
+dig @8.8.8.8 example.com            # Query specific DNS server                    In your case when you use it in real working site than output will be different and in bulk in my case 
+                                                                                   this is simple site therefore not much info get back : ) lets START.....
+# Record Type Queries
+dig example.com A                   # IPv4 addresses
+dig example.com AAAA                # IPv6 addresses
+dig example.com MX                  # Mail servers
+dig example.com NS                  # Nameservers
+dig example.com TXT                 # TXT records
+dig example.com SOA                 # Start of Authority
+dig example.com CNAME               # Canonical names
+dig example.com PTR                 # Pointer records (reverse DNS)
+
+# Advanced Queries
+dig example.com +trace              # Trace DNS resolution path    
+dig -x IP_ADDRESS                   # Reverse DNS lookup
+dig example.com +dnssec             # Query with DNSSEC
+dig example.com +noall +answer      # Show only answer section
+dig example.com +noall +authority   # Show only authority section
+dig example.com +noall +additional  # Show only additional section
+
+# Zone Transfer Attempts
+dig @ns1.example.com example.com AXFR     # Full zone transfer request
+dig @ns1.example.com example.com IXFR     # Incremental zone transfer
+
+# Query Options
+dig example.com +nocmd            # Remove command line from output
+dig example.com +noall            # Remove all sections from output
+dig example.com +nostats          # Remove statistics from output
+dig example.com +noquestion       # Remove question section
+dig example.com +noauthority      # Remove authority section
+dig example.com +noadditional     # Remove additional section
+
+# Multiple Queries
+dig example.com NS MX             # Query multiple record types
+dig @8.8.8.8 example.com +multi   # Multiple questions in one query
+
+# Timing and Retry Options
+dig example.com +retry=2          # Set number of retries
+dig example.com +time=10          # Set query timeout
+dig example.com +tries=3          # Set number of attempts
+
+# Output Formatting
+dig example.com +short                  # Short form output
+dig example.com +nocomments             # Remove comments
+dig example.com +nocrypto               # Hide cryptographic parts
+dig example.com +identify               # Show IP of responding server
+dig example.com +stats                  # Show statistics
+
+# Security Testing Specific
+dig example.com +dnssec +cd             # Check DNSSEC validation
+dig example.com +edns=0                 # Test EDNS support
+dig example.com +cdflag                 # Check for DNSSEC checking disabled
+dig example.com +nsid                   # Request nameserver ID
+dig example.com +subnet=192.168.1.0/24  # Test with EDNS client subnet
+
+# Batch Processing
+dig -f inputfile                        # Read queries from file
+
+
+# 1. Subdomain Enumeration
+# Find all subdomains with detailed info
+for sub in $(cat subdomains.txt); do dig +nocmd $sub.example.com +noall +answer; done
+
+# Recursive subdomain query with timing
+dig +nocmd +noall +answer +tries=5 +time=5 +recurse sub.example.com
+
+# 2. Mail Server Security Testing
+# Comprehensive mail server analysis
+dig +short example.com MX | while read prio server; do
+    echo "=== $server ==="
+    dig +short $server A
+    dig +short $server AAAA
+    dig +short $server TXT
+--------------------------------------------
+
+# 3. DNS Infrastructure Mapping
+# Full DNS infrastructure analysis
+for type in A AAAA MX NS SOA TXT; do
+    echo "=== $type Records ==="
+    dig +nocmd example.com $type +noall +answer
+--------------------------------------------
+
+# 4. Advanced Zone Transfer
+# Attempt zone transfer from all nameservers
+dig example.com NS +short | while read ns; do
+    echo "=== Attempting transfer from $ns ==="
+    dig @$ns example.com AXFR +noall +answer
+---------------------------------------------
+
+# 5. DNSSEC Validation Testing
+# Complete DNSSEC chain validation
+dig +dnssec +multi example.com ANY | grep -E "RRSIG|DNSKEY|DS"
+dig +trace +dnssec example.com | grep -E "RRSIG|DNSKEY|DS"
+
+# 6. DNS Response Policy Testing
+# Test DNS response policies with different flags
+for flag in cd ad do; do
+    echo "=== Testing with +$flag flag ==="
+    dig +$flag example.com +dnssec
+----------------------------------------------
+
+# 7. DNS Load Testing (Use with caution and authorization)
+# Test response times under load
+for i in {1..10}; do
+    time dig @nameserver example.com +tries=1 +timeout=2
+    sleep 1
+-----------------------------------------------
+
+# 8. Reverse DNS Mapping
+# Reverse DNS lookup for IP range
+for ip in $(seq 1 254); do
+    dig +short -x 192.168.1.$ip
+-----------------------------------------------
+
+# 9. SPF and DMARC Record Analysis
+# Comprehensive email security record check
+for record in _dmarc TXT; do
+    echo "=== Checking $record records ==="
+    dig +short example.com $record
+    dig +trace example.com $record
+------------------------------------------------
+
+# 10. DNS Propagation Testing
+# Check DNS propagation across multiple servers
+for dns in "8.8.8.8" "1.1.1.1" "9.9.9.9"; do
+    echo "=== Testing against $dns ==="
+    dig @$dns example.com +short
+------------------------------------------------
+
+# 11. Advanced DNS Reconnaissance
+# Gather comprehensive DNS information
+for type in A AAAA NS MX TXT SOA DNSKEY NSEC NSEC3 RRSIG; do
+    echo "=== $type Records with DNSSEC ==="
+    dig +dnssec example.com $type +nocmd +noall +answer
+------------------------------------------------
+
+# 12. DNS Cache Analysis
+# Test for DNS cache poisoning vulnerabilities
+for i in {1..5}; do
+    dig example.com @nameserver +notcp +bufsize=4096
+    dig example.com @nameserver +tcp +bufsize=4096
+------------------------------------------------
+
+# 13. EDNS Testing
+# Test EDNS capabilities with different payload sizes
+for size in 512 1220 4096; do
+    echo "=== Testing EDNS with size $size ==="
+    dig example.com +dnssec +bufsize=$size
+------------------------------------------------
+
+# 14. DNS Timing Analysis
+# Measure response times for different record types
+for type in A MX NS SOA; do
+    echo "=== Timing for $type records ==="
+    time dig example.com $type +tries=1 +timeout=1
+------------------------------------------------
+
+# 15. Wildcard DNS Detection
+# Test for wildcard DNS entries
+for prefix in random{1..5}; do
+    dig $prefix.example.com +short
+------------------------------------------------
+
+
+
+
+# DNS Security Testing and Analysis Guide
+
+## 1. Subdomain Enumeration
+**Purpose**: Discover and map all subdomains of a target domain.
+
+# Basic subdomain enumeration
+while read sub; do
+    dig +nocmd "$sub.example.com" +noall +answer
+done < subdomains.txt
+
+# Recursive query with timeout
+dig +nocmd +noall +answer +tries=5 +time=5 +recurse sub.example.com
+```
+
+## 2. Mail Server Security Testing
+**Purpose**: Analyze mail server configurations and security settings.
+
+
+# Comprehensive mail server analysis
+for server in $(dig +short example.com MX | awk '{print $2}'); do
+    echo "=== Testing $server ==="
+    dig +short "$server" A
+    dig +short "$server" AAAA
+    dig +short "$server" TXT
+
+```
+
+## 3. DNS Infrastructure Mapping
+**Purpose**: Map complete DNS infrastructure including all record types.
+
+
+# Full DNS record analysis
+for type in A AAAA MX NS SOA TXT; do
+    echo "=== $type Records ==="
+    dig +nocmd example.com "$type" +noall +answer
+
+```
+
+## 4. Zone Transfer Testing
+**Purpose**: Test for misconfigured zone transfers.
+
+
+# Test zone transfers from all nameservers
+for ns in $(dig example.com NS +short); do
+    echo "=== Testing zone transfer from $ns ==="
+    dig @"$ns" example.com AXFR +noall +answer
+
+```
+
+## 5. DNSSEC Validation
+**Purpose**: Verify DNSSEC implementation and chain of trust.
+
+
+# DNSSEC chain validation
+dig +dnssec +multi example.com ANY | grep -E "RRSIG|DNSKEY|DS"
+dig +trace +dnssec example.com
+```
+
+## 6. DNS Response Policy Testing
+**Purpose**: Test DNS server response policies.
+
+
+# Test different DNS flags
+for flag in cd ad do; do
+    echo "=== Testing with +$flag flag ==="
+    dig +"$flag" example.com +dnssec
+
+```
+
+## 7. DNS Load Testing
+**Purpose**: Test DNS server response under load (requires authorization).
+
+
+# Basic load testing
+for i in {1..10}; do
+    time dig @nameserver example.com +tries=1 +timeout=2
+    sleep 1
+
+```
+
+## 8. Reverse DNS Mapping
+**Purpose**: Perform reverse DNS lookups for IP ranges.
+
+
+# Reverse DNS lookup for subnet
+for ip in $(seq 1 254); do
+    dig +short -x "192.168.1.$ip"
+
+```
+
+## 9. Email Security Record Analysis
+**Purpose**: Analyze SPF, DMARC, and related email security records.
+
+
+# Check email security records
+for record in _dmarc TXT; do
+    echo "=== Checking $record ==="
+    dig +short example.com "$record"
+
+```
+
+## 10. DNS Propagation Testing
+**Purpose**: Verify DNS propagation across different DNS servers.
+
+
+# Test multiple DNS servers
+for dns in "8.8.8.8" "1.1.1.1" "9.9.9.9"; do
+    echo "=== Testing against $dns ==="
+    dig @"$dns" example.com +short
+
+```
+
+## 11. Advanced DNS Reconnaissance
+**Purpose**: Gather comprehensive DNS information including DNSSEC records.
+
+
+# Comprehensive DNS record gathering
+for type in A AAAA NS MX TXT SOA DNSKEY NSEC NSEC3 RRSIG; do
+    echo "=== $type Records with DNSSEC ==="
+    dig +dnssec example.com "$type" +nocmd +noall +answer
+
+```
+
+## 12. Cache Analysis
+**Purpose**: Test for DNS cache poisoning vulnerabilities.
+
+
+# Cache testing with TCP and non-TCP
+for i in {1..5}; do
+    dig example.com @nameserver +notcp +bufsize=4096
+    dig example.com @nameserver +tcp +bufsize=4096
+
+```
+
+## 13. EDNS Testing
+**Purpose**: Test EDNS capabilities with various payload sizes.
+
+
+# EDNS capability testing
+for size in 512 1220 4096; do
+    echo "=== Testing EDNS with size $size ==="
+    dig example.com +dnssec +bufsize="$size"
+
+```
