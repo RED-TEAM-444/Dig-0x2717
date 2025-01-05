@@ -88,7 +88,7 @@ options=(
 
 
 # Explanation of the Code (adv2_dig.sh)
-This script is an advanced automation tool for executing exhaustive DNS queries using the dig command. Developed by SID | RED TEAM, it combines user-friendly customization, comprehensive DNS testing, parallel query execution, security testing, and automated reporting in HTML format.
+This script is an advanced automation tool for executing exhaustive DNS queries using the dig command. It combines user-friendly customization, comprehensive DNS testing, parallel query execution, security testing, and automated reporting in HTML format.
 
 ### Features
 1. Dynamic Input Handling:
